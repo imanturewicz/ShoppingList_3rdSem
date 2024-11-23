@@ -5,8 +5,7 @@ public class Product {
     public Product(String n, double p) {
         name = n;
         price = p;
-    }
-    public Product() {}
+    } public Product() {}
 
     public String getName() {
         return name;
