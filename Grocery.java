@@ -1,18 +1,20 @@
 public class Grocery extends Product {
-    private char nutriscore = 'X';
+    private char nutriScore = 'X';
 
-    public Grocery(String nazwa, double cena, int ilosc, char nutri) {
-        super(nazwa, cena, ilosc);
-        nutriscore = nutri;
-    } public Grocery() {}
+    public Grocery(String name, double price, int quantity, char nutriScore) {
+        super(name, price, quantity);
+        this.nutriScore = nutriScore;
+    }
 
-    public char getNutriscore() {
-        return nutriscore;
+    public Grocery() {}
+
+    public char getNutriScore() {
+        return nutriScore;
     }
 
     @Override
     public void show() {
         super.show();
-        System.out.println(getNutriscore());
+        System.out.println(getNutriScore());
     }
 }
