@@ -19,6 +19,10 @@ public class Product {
         return quantity;
     }
 
+    public void setQuantity(int q) {
+        quantity = q;
+    }
+
     public void show() {
         System.out.println(getName());
         System.out.println(getPrice());
