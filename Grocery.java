@@ -1,8 +1,8 @@
 public class Grocery extends Product {
     private char nutriscore = 'X';
 
-    public Grocery(String nazwa, double cena, int ilosc, char nutri) {
-        super(nazwa, cena, ilosc);
+    public Grocery(String name, double cena, int ilosc, char nutri) {
+        super(name, cena, ilosc);
         nutriscore = nutri;
     } public Grocery() {}
 

@@ -9,7 +9,7 @@ public class Main {
         // List<Product> products = new ArrayList<>();
         PriorityQueue<Product> products = new PriorityQueue<>((a, b) -> 
         Double.compare(a.getPrice()*a.getQuantity(), b.getPrice()*b.getQuantity()));
-        String category, name, author, quantparsing;
+        String category, name, author, quantParsing;
         double price;
         char nutriscore;
         int quantity;
@@ -31,10 +31,10 @@ public class Main {
                         name = parts[2];
                         price = Double.parseDouble(parts[3].replace("$", ""));
 
-                        quantparsing = parts[6].chars().filter(Character::isDigit)
+                        quantParsing = parts[6].chars().filter(Character::isDigit)
                         .collect(StringBuilder::new,StringBuilder::appendCodePoint,StringBuilder::append).toString();
 
-                        quantity = Integer.parseInt(quantparsing);
+                        quantity = Integer.parseInt(quantParsing);
                         if (category.equals("Grocery")) {
                             nutriscore = parts[5].charAt(0);
                             products.add(new Grocery(name, price, quantity, nutriscore));

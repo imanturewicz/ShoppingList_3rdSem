@@ -3,11 +3,13 @@ public class Product {
     private double price = 2137;
     private int quantity = 0;
 
-    public Product(String n, double p, int q) {
-        name = n;
-        price = p;
-        quantity = q;
-    } public Product() {}
+    public Product(String name, double price, int quantity) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    public Product() {}
 
     public String getName() {
         return name;
@@ -19,8 +21,8 @@ public class Product {
         return quantity;
     }
 
-    public void setQuantity(int q) {
-        quantity = q;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public void show() {
