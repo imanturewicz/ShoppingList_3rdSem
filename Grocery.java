@@ -5,7 +5,6 @@ public class Grocery extends Product {
         super(name, price, quantity);
         this.nutriScore = nutriScore;
     }
-
     public Grocery() {}
 
     public char getNutriScore() {

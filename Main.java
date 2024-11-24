@@ -1,24 +1,26 @@
 import java.io.*;
 import java.util.*;
 
+
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         PriorityQueue<Product> products = new PriorityQueue<>((a, b) ->
-                Double.compare(a.getPrice()*a.getQuantity(), b.getPrice()*b.getQuantity()));//TODO IntelliJ podpowiada, że może być replaced with Comperator.comparingDouble
-
+                Double.compare(a.getPrice()*a.getQuantity(), b.getPrice()*b.getQuantity()));
+                //TODO IntelliJ podpowiada, że może być replaced with Comperator.comparingDouble
 
         System.out.print("Parse the shopping list from memory? [Y/n] ");
-        char parse = scanner.next().charAt(0);
-        if(parse == 'Y') {
+        boolean parse = 'Y' == scanner.next().charAt(0);
+        if(parse) {
             readProductFromFile(scanner, products);
         }
 
         System.out.print("Manually add to the shopping list? [Y/n] ");
-        char manual = scanner.next().charAt(0);
-        if(manual == 'Y') {
+        boolean manual = 'Y' == scanner.next().charAt(0);
+        if(manual) {
             addProductsManually(scanner,products);
         }
+
         scanner.close();
 
         String outputFileName = "output.txt";
@@ -71,6 +73,7 @@ public class Main {
         boolean isDuplicate;
         int quantity, howMany, numDup;
         Product targetProduct = new Product();
+        targetProduct.show();
 
         System.out.print("How many different items? ");
         howMany = scanner.nextInt();
@@ -79,7 +82,7 @@ public class Main {
             System.out.print("\nAre you duplicating an item? [Y/n] ");
             isDuplicate = 'Y' == scanner.next().charAt(0);
 
-            if(isDuplicate) {//TODO: to co się dzieje w tym ifie wygląda na początek jakiegoś niezrozumiałem dla mnie funkcjonalności
+            if(isDuplicate) {
                 System.out.print("\nWhich item? ");
                 targetname = scanner.next();
                 System.out.print("How many "+targetname+"s are you adding? ");
@@ -118,18 +121,21 @@ public class Main {
 
     private static void writeProductToFile(PriorityQueue<Product> products, String outputFileName){
         int numberOfProducts = products.size();
+        Grocery grocery;
+        Book book;
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName))) {
             for(int i = 0; i < numberOfProducts; i++) {
                 writer.write(i+1+": ");
                 if(products.peek() instanceof Grocery) {
-                    Grocery grocery = (Grocery) products.poll();
+                    grocery = (Grocery) products.poll();
                     writer.write("Grocery "+grocery.getName()+" "
                             +grocery.getPrice()+"$ nutriscore: "
                             +grocery.getNutriScore()+" x"
                             +grocery.getQuantity()+".");
                 }
                 else if(products.peek() instanceof Book) {
-                    Book book = (Book) products.poll();
+                    book = (Book) products.poll();
                     writer.write("Book "+book.getName()+" "
                             +book.getPrice()+"$ Author: "
                             +book.getAuthor()+" x"

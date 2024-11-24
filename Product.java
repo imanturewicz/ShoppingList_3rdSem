@@ -1,6 +1,6 @@
 public class Product {
     private String name = "XXX";
-    private double price = 2137;
+    private double price = -2137;
     private int quantity = 0;
 
     public Product(String name, double price, int quantity) {
@@ -8,7 +8,6 @@ public class Product {
         this.price = price;
         this.quantity = quantity;
     }
-
     public Product() {}
 
     public String getName() {
