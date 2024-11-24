@@ -72,12 +72,11 @@ public class Main {
         char nutriScore;
         boolean isDuplicate;
         int quantity, howMany, numDup;
-        Product targetProduct = new Product();
-        targetProduct.show();
 
         System.out.print("How many different items? ");
         howMany = scanner.nextInt();
 
+        Product targetProduct = new Product();
         for(int i = 1; i <= howMany; i++) {
             System.out.print("\nAre you duplicating an item? [Y/n] ");
             isDuplicate = 'Y' == scanner.next().charAt(0);
