@@ -6,10 +6,13 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        List<Product> products = new ArrayList<>();
-        String category, name, author;
+        // List<Product> products = new ArrayList<>();
+        PriorityQueue<Product> products = new PriorityQueue<>((a, b) -> 
+        Double.compare(a.getPrice()*a.getQuantity(), b.getPrice()*b.getQuantity()));
+        String category, name, author, quantparsing;
         double price;
         char nutriscore;
+        int quantity;
 
         System.out.print("Parse the shopping list from memory? [Y/n] ");
         char parse = scanner.next().charAt(0);
@@ -22,18 +25,22 @@ public class Main {
             try(BufferedReader reader = new BufferedReader(new FileReader(inputFilePath))) {
                 String line;
                 while((line = reader.readLine()) != null) {
-                    // System.out.println("Reading line: " + line);
                     if(line.endsWith(".")) {
                         parts = line.split("\\s+");
                         category = parts[1];
                         name = parts[2];
                         price = Double.parseDouble(parts[3].replace("$", ""));
+
+                        quantparsing = parts[6].chars().filter(Character::isDigit)
+                        .collect(StringBuilder::new,StringBuilder::appendCodePoint,StringBuilder::append).toString();
+
+                        quantity = Integer.parseInt(quantparsing);
                         if (category.equals("Grocery")) {
                             nutriscore = parts[5].charAt(0);
-                            products.add(new Grocery(name, price, nutriscore));
+                            products.add(new Grocery(name, price, quantity, nutriscore));
                         } else if (category.equals("Book")) {
                             author = parts[5].replace(".", "");
-                            products.add(new Book(name, price, author));
+                            products.add(new Book(name, price, quantity, author));
                         }
                     }
                 }
@@ -46,7 +53,7 @@ public class Main {
         char manual = scanner.next().charAt(0);
 
         if(manual == 'Y') {
-            System.out.print("How many items? ");
+            System.out.print("How many different items? ");
             int howmany = scanner.nextInt();
 
             for(int i = 1; i <= howmany; i++) {
@@ -54,43 +61,43 @@ public class Main {
                 category = scanner.next();
                 System.out.print("Name: ");
                 name = scanner.next();
+                System.out.print("Quantity: ");
+                quantity = scanner.nextInt();
                 System.out.print("Price: ");
                 price = scanner.nextDouble();
                 if(category.equals("Grocery")) {
                     System.out.print("Nutriscore: ");
                     nutriscore = scanner.next().charAt(0);
-                    products.add(new Grocery(name, price, nutriscore));
+                    products.add(new Grocery(name, price, quantity, nutriscore));
                 }
                 else if(category.equals("Book")) {
                     System.out.print("Author: ");
                     author = scanner.next();
-                    products.add(new Book(name, price, author));
+                    products.add(new Book(name, price, quantity, author));
                 }
             }
         }
 
-        // for (int i = 0; i < products.size(); i++) {
-        //     System.out.println();                                    //wyświetlanie zawartości listy w konsoli
-        //     products.get(i).show();
-        // }
-
+        int n = products.size();
         Grocery grocery;
         Book book;
         String outputFilePath = "output.txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath))) {
-            for(int i = 0; i < products.size(); i++) {
+            for(int i = 0; i < n; i++) {
                 writer.write(i+1+": ");
-                if(products.get(i) instanceof Grocery) {
-                    grocery = (Grocery) products.get(i);
+                if(products.peek() instanceof Grocery) {
+                    grocery = (Grocery) products.poll();
                     writer.write("Grocery "+grocery.getName()+" "
                     +grocery.getPrice()+"$ nutriscore: "
-                    +grocery.getNutriscore()+".");
+                    +grocery.getNutriscore()+" x"
+                    +grocery.getQuantity()+".");
                 }
-                else if(products.get(i) instanceof Book) {
-                    book = (Book) products.get(i);
+                else if(products.peek() instanceof Book) {
+                    book = (Book) products.poll();
                     writer.write("Book "+book.getName()+" "
                     +book.getPrice()+"$ Author: "
-                    +book.getAuthor()+".");
+                    +book.getAuthor()+" x"
+                    +book.getQuantity()+".");
                 }
                 writer.newLine();
             }

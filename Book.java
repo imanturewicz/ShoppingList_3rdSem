@@ -1,8 +1,8 @@
 public class Book extends Product {
     private String author = "Jo-Mama";
 
-    public Book(String nazwa, double cena, String autor) {
-        super(nazwa, cena);
+    public Book(String nazwa, double cena, int ilosc, String autor) {
+        super(nazwa, cena, ilosc);
         author = autor;
     } public Book() {}
 
