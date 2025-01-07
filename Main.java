@@ -7,15 +7,15 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         PriorityQueue<Product> products = new PriorityQueue<>((a, b) ->
                 Double.compare(a.getPrice()*a.getQuantity(), b.getPrice()*b.getQuantity()));
-                //TODO IntelliJ podpowiada, że może być replaced with Comperator.comparingDouble
+                //declaration of the queue for the products
 
-        System.out.print("Parse the shopping list from memory? [Y/n] ");
+        System.out.print("Parse the shopping list from memory? [Y/n] ");    //optional uploading an existing shopping list
         boolean parse = 'Y' == scanner.next().charAt(0);
         if(parse) {
             readProductFromFile(scanner, products);
         }
 
-        System.out.print("Manually add to the shopping list? [Y/n] ");
+        System.out.print("Manually add to the shopping list? [Y/n] ");        //optional adding to the shopping list from the terminal
         boolean manual = 'Y' == scanner.next().charAt(0);
         if(manual) {
             addProductsManually(scanner,products);
@@ -24,7 +24,7 @@ public class Main {
         scanner.close();
 
         String outputFileName = "output.txt";
-        writeProductToFile(products,outputFileName);
+        writeProductToFile(products,outputFileName);        //outputting shopping list
 
     }
 
@@ -43,16 +43,16 @@ public class Main {
             String line;
             while((line = reader.readLine()) != null) {
                 if(line.endsWith(".")) {
-                    parts = line.split("\\s+");
+                    parts = line.split("\\s+");        //splitting the uploaded list's line into several properties
                     category = parts[1];
                     name = parts[2];
                     price = Double.parseDouble(parts[3].replace("$", ""));
 
-                    quantParsing = parts[6].chars().filter(Character::isDigit)
+                    quantParsing = parts[6].chars().filter(Character::isDigit)        //help for obtaining the "quantity"
                             .collect(StringBuilder::new,StringBuilder::appendCodePoint,StringBuilder::append).toString();
-
                     quantity = Integer.parseInt(quantParsing);
-                    if (category.equals("Grocery")) {
+                    
+                    if (category.equals("Grocery")) {        //adding the parsed object to the queue (list)
                         nutriScore = parts[5].charAt(0);
                         products.add(new Grocery(name, price, quantity, nutriScore));
                     } else if (category.equals("Book")) {
@@ -81,22 +81,22 @@ public class Main {
             System.out.print("\nAre you duplicating an item? [Y/n] ");
             isDuplicate = 'Y' == scanner.next().charAt(0);
 
-            if(isDuplicate) {
+            if(isDuplicate) {        //this option comes usefull when the user wants to add the products that already exist on the list
                 System.out.print("\nWhich item? ");
                 targetname = scanner.next();
                 System.out.print("How many "+targetname+"s are you adding? ");
                 numDup = scanner.nextInt();
-                for (Product item : products) {
+                for (Product item : products) {        //searching for the given product in the list
                     if (item.getName().equals(targetname)) {
                         targetProduct = item;
                     }
                 }
                 products.remove(targetProduct);
                 targetProduct.setQuantity(targetProduct.getQuantity() + numDup);
-                products.add(targetProduct);
+                products.add(targetProduct);        //adding the product with increased quantity
             } else {
                 System.out.print("\nPodaj "+i+" produkt:\nCategory (Grocery/Book): ");
-                category = scanner.next();
+                category = scanner.next();        //inputting the properties of the product
                 System.out.print("Name: ");
                 name = scanner.next();
                 System.out.print("Quantity: ");
@@ -123,7 +123,7 @@ public class Main {
         Grocery grocery;
         Book book;
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName))) {        //saving the shopping list into the provided file
             for(int i = 0; i < numberOfProducts; i++) {
                 writer.write(i+1+": ");
                 if(products.peek() instanceof Grocery) {
