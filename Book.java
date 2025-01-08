@@ -14,7 +14,7 @@ public class Book extends Product {
      */
     public Book() {}
 
-    public String getAuthor() {        //getter
+    public String getAuthor() {
         return author;
     }
 

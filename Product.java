@@ -18,7 +18,7 @@ public class Product {
      */
     public Product() {}
 
-    public String getName() {        //getters
+    public String getName() {
         return name;
     }
     public double getPrice() {
@@ -28,7 +28,7 @@ public class Product {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {        //setters
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
