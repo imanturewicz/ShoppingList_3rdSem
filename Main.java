@@ -1,21 +1,26 @@
 import java.io.*;
 import java.util.*;
 
-
+/**
+ * The Main class is the entry point of the program.
+ * It allows the user to create a shopping list made of Products and its subclasses based on manual input or by parsing the file.
+ */
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        //declaration of the queue for the products
         PriorityQueue<Product> products = new PriorityQueue<>((a, b) ->
                 Double.compare(a.getPrice()*a.getQuantity(), b.getPrice()*b.getQuantity()));
-                //declaration of the queue for the products
 
-        System.out.print("Parse the shopping list from memory? [Y/n] ");    //optional uploading an existing shopping list
+        //optional uploading an existing shopping list
+        System.out.print("Parse the shopping list from internal file? [Y/n] ");
         boolean parse = 'Y' == scanner.next().charAt(0);
         if(parse) {
             readProductFromFile(scanner, products);
         }
 
-        System.out.print("Manually add to the shopping list? [Y/n] ");        //optional adding to the shopping list from the terminal
+        //optional adding to the shopping list from the terminal
+        System.out.print("Manually add to the shopping list? [Y/n] ");
         boolean manual = 'Y' == scanner.next().charAt(0);
         if(manual) {
             addProductsManually(scanner,products);
@@ -24,8 +29,7 @@ public class Main {
         scanner.close();
 
         String outputFileName = "output.txt";
-        writeProductToFile(products,outputFileName);        //outputting shopping list
-
+        writeProductToFile(products,outputFileName); //outputting shopping list
     }
 
 
@@ -43,16 +47,17 @@ public class Main {
             String line;
             while((line = reader.readLine()) != null) {
                 if(line.endsWith(".")) {
-                    parts = line.split("\\s+");        //splitting the uploaded list's line into several properties
+                    //splitting the uploaded list's line into several properties
+                    parts = line.split("\\s+");
                     category = parts[1];
                     name = parts[2];
                     price = Double.parseDouble(parts[3].replace("$", ""));
 
-                    quantParsing = parts[6].chars().filter(Character::isDigit)        //help for obtaining the "quantity"
-                            .collect(StringBuilder::new,StringBuilder::appendCodePoint,StringBuilder::append).toString();
+                    quantParsing = parts[6].chars().filter(Character::isDigit)
+                            .collect(StringBuilder::new,StringBuilder::appendCodePoint,StringBuilder::append).toString(); //helper for obtaining the "quantity"
                     quantity = Integer.parseInt(quantParsing);
-                    
-                    if (category.equals("Grocery")) {        //adding the parsed object to the queue (list)
+                    //adding the parsed object to the queue (list)
+                    if (category.equals("Grocery")) {
                         nutriScore = parts[5].charAt(0);
                         products.add(new Grocery(name, price, quantity, nutriScore));
                     } else if (category.equals("Book")) {
@@ -81,22 +86,24 @@ public class Main {
             System.out.print("\nAre you duplicating an item? [Y/n] ");
             isDuplicate = 'Y' == scanner.next().charAt(0);
 
-            if(isDuplicate) {        //this option comes usefull when the user wants to add the products that already exist on the list
+            //this option comes useful when the user wants to add the products that already exist on the list
+            if(isDuplicate) {
                 System.out.print("\nWhich item? ");
                 targetname = scanner.next();
                 System.out.print("How many "+targetname+"s are you adding? ");
                 numDup = scanner.nextInt();
-                for (Product item : products) {        //searching for the given product in the list
+                //searching for the given product in the list
+                for (Product item : products) {
                     if (item.getName().equals(targetname)) {
                         targetProduct = item;
                     }
                 }
                 products.remove(targetProduct);
                 targetProduct.setQuantity(targetProduct.getQuantity() + numDup);
-                products.add(targetProduct);        //adding the product with increased quantity
+                products.add(targetProduct); //adding the product with increased quantity
             } else {
                 System.out.print("\nPodaj "+i+" produkt:\nCategory (Grocery/Book): ");
-                category = scanner.next();        //inputting the properties of the product
+                category = scanner.next(); //inputting the properties of the product
                 System.out.print("Name: ");
                 name = scanner.next();
                 System.out.print("Quantity: ");
@@ -122,8 +129,8 @@ public class Main {
         int numberOfProducts = products.size();
         Grocery grocery;
         Book book;
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName))) {        //saving the shopping list into the provided file
+        //saving the shopping list into the provided file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName))) {
             for(int i = 0; i < numberOfProducts; i++) {
                 writer.write(i+1+": ");
                 if(products.peek() instanceof Grocery) {
