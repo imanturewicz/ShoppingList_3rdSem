@@ -14,7 +14,7 @@ public class Grocery extends Product {
      */
     public Grocery() {}
 
-    public char getNutriScore() {        //getter
+    public char getNutriScore() {
         return nutriScore;
     }
 
